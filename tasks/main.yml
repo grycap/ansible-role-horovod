@@ -1,0 +1,24 @@
+- name: Install system packages
+  include_tasks: "{{ansible_os_family}}.yml"
+
+- name: Install GPU support
+  include_tasks: "gpu.yml"
+  when: gpu_support
+
+- name: Install python dependencies
+  pip:
+    name:
+      - "tensorflow==2.13.1"
+      - "keras==2.13.1"
+      - "torch==1.13.1"
+    executable: pip3
+  environment:
+    # This is only needed for RedHat
+    PATH: "{{ ansible_env.PATH }}:/usr/lib64/openmpi/bin"
+
+- name: Install horovod
+  pip:
+    name: "horovod[keras,pytorch,tensorflow]"
+    executable: pip3
+    extra_args: --no-cache-dir --no-binary horovod
+  environment: "{{ horovod_install_env_vars }}"

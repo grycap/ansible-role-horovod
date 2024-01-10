@@ -1,0 +1,7 @@
+---
+gpu_support: false
+horovod_install_env_vars:
+  HOROVOD_WITH_MPI: 1
+  HOROVOD_WITH_PYTORCH: 1
+  HOROVOD_WITH_TENSORFLOW: 1
+  HOROVOD_WITHOUT_MXNET: 1

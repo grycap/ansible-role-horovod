@@ -1,0 +1,25 @@
+galaxy_info:
+  role_name: horovod
+  namespace: grycap
+  author: micafer1@upv.es
+  description: Install Horovod
+  company: GRyCAP UPV
+  license: Apache
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - focal
+    - jammy
+  - name: EL
+    versions:
+    - 9
+    - 8
+  galaxy_tags:
+   - horovod
+
+dependencies:
+- role: 'NVIDIA.nvidia_driver'
+  nvidia_driver_ubuntu_install_from_cuda_repo: yes
+  nvidia_driver_ubuntu_cuda_keyring_package: "cuda-keyring_1.1-1_all.deb"
+  when: gpu_support | bool

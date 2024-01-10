@@ -1,0 +1,20 @@
+- name: Install system dependencies in Debian
+  apt:
+    pkg:
+      - python3
+      - python3-dev
+      - openmpi-bin
+      - openmpi-common
+      - libopenmpi-dev
+      - gcc-10
+      - g++-10
+      - make
+      - cmake
+      - python3-pip
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+
+- name: Set CC and CXX for Debian to gcc-10 and g++-10
+  set_fact:
+    horovod_install_env_vars: "{{ horovod_install_env_vars | combine({'CC': '/usr/bin/gcc-10', 'CXX': '/usr/bin/g++-10'}) }}"

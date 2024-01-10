@@ -1,0 +1,35 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create man dir
+      file:
+        path: /usr/share/man/man1/
+        state: directory
+        mode: 0644
+        recurse: yes
+      when: ansible_os_family == "Debian"
+
+    - name: "Include grycap.horovod"
+      include_role:
+        name: "ansible-role-horovod"
+      vars:
+        gpu_support: true
+        nvidia_driver_skip_reboot: true
+
+    - name: Check Horovod installation
+      command: /usr/local/bin/horovodrun --check-build
+      register: horovod_check
+
+    - debug:
+        var: horovod_check
+
+    - assert:
+        that:
+          - "horovod_check.rc == 0"
+          - "horovod_check.stdout.find('[X] TensorFlow') != -1"
+          - "horovod_check.stdout.find('[X] PyTorch') != -1"
+          - "horovod_check.stdout.find('[X] MPI') != -1"
+          - "horovod_check.stdout.find('[X] NCCL') != -1"
