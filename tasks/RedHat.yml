@@ -2,16 +2,35 @@
   package:
     name: epel-release
 
-- name: Install system dependencies in RedHat
+- name: Install system dependencies in RedHat 9+
   package:
     name:
       - python3
       - python3-devel
+      - python3-pip
+  when: ansible_distribution_major_version|int >= 9
+
+- name: Install system dependencies in RedHat 8-
+  package:
+    name:
+      - python38
+      - python38-devel
+      - python38-pip
+  when: ansible_distribution_major_version|int <= 8
+
+- name: Set python3.8 as default in RedHat 8-
+  alternatives:
+    name: python3
+    path: /usr/bin/python3.8
+  when: ansible_distribution_major_version|int <= 8
+
+- name: Install system dependencies in RedHat
+  package:
+    name:
       - gcc
       - gcc-c++
       - make
       - cmake
-      - python3-pip
       - openmpi
       - openmpi-devel
 

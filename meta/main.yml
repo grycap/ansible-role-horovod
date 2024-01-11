@@ -13,8 +13,8 @@ galaxy_info:
     - jammy
   - name: EL
     versions:
-    - 9
     - 8
+    - 9
   galaxy_tags:
    - horovod
 
